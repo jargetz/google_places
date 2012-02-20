@@ -134,4 +134,10 @@ describe GooglePlaces::Spot do
     end
   end
 
+  context 'Do an autocomplete search' do
+    #TODO
+    it "develop autocomplete search" do
+      pending "currently under development"
+    end
+  end
 end

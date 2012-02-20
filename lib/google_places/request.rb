@@ -6,7 +6,14 @@ module GooglePlaces
     format :json
 
     SPOTS_LIST_URL = 'https://maps.googleapis.com/maps/api/place/search/json'
-    SPOT_URL = 'https://maps.googleapis.com/maps/api/place/details/json'
+    SPOT_URL   = 'https://maps.googleapis.com/maps/api/place/details/json'
+    PLACES_URL = 'https://maps.googleapis.com/maps/api/place/autocomplete/json'
+
+    def self.autocomplete(options = {})
+      # pp options
+      request = new(PLACES_URL, options)
+      request.parsed_response
+    end
 
     def self.spots(options = {})
       # pp options
@@ -21,6 +28,7 @@ module GooglePlaces
     end
 
     def initialize(url, options)
+
       retry_options = options.delete(:retry_options) || {}
 
       retry_options[:status] ||= []
@@ -36,7 +44,6 @@ module GooglePlaces
       retry_request = proc do
         for i in (1..retry_options[:max])
           sleep(retry_options[:delay])
-
           @response = self.class.get(url, :query => options)
 
           break unless retry_options[:status].include?(@response.parsed_response['status'])

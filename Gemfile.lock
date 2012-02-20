@@ -1,17 +1,23 @@
 PATH
   remote: .
   specs:
-    google_places (0.0.5)
+    google_places (0.0.8)
       httparty
+
+PATH
+  remote: ~/httparty
+  specs:
+    httparty (0.8.1)
+      multi_json
+      multi_xml
 
 GEM
   remote: http://rubygems.org/
   specs:
-    crack (0.1.8)
     diff-lcs (1.1.2)
     fakeweb (1.3.0)
-    httparty (0.7.7)
-      crack (= 0.1.8)
+    multi_json (1.0.4)
+    multi_xml (0.4.1)
     rspec (2.6.0)
       rspec-core (~> 2.6.0)
       rspec-expectations (~> 2.6.0)
@@ -28,5 +34,6 @@ PLATFORMS
 DEPENDENCIES
   fakeweb
   google_places!
+  httparty!
   rspec
   vcr

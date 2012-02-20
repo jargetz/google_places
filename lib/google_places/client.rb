@@ -15,5 +15,9 @@ module GooglePlaces
     def spot(reference, options = {})
       Spot.find(reference, @api_key, @options.merge(options))
     end
+
+    def autocomplete(search_term, lat, lng, options = {})
+      Spot.autocomplete(search_term, lat, lng, @api_key, @options.merge(options))
+    end
   end
 end

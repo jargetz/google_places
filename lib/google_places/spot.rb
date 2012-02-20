@@ -1,6 +1,40 @@
 module GooglePlaces
   class Spot
-    attr_accessor :lat, :lng, :name, :icon, :reference, :vicinity, :types, :id, :formatted_phone_number, :international_phone_number, :formatted_address, :address_components, :street_number, :street, :city, :region, :postal_code, :country, :rating, :url, :cid, :website
+    attr_accessor :lat, :lng, :name, :icon, :reference, :vicinity, :types, :id, :formatted_phone_number, :international_phone_number, :formatted_address, :address_components, :street_number, :street, :city, :region, :postal_code, :country, :rating, :url, :cid, :website, :description, :id, :matched_substrings, :reference, :terms
+
+    def self.autocomplete(search_term, lat, lng, api_key, options={})
+      sensor = options.delete(:sensor) || false
+      offset = options.delete(:offset) || ""
+      location = Location.new(lat, lng)
+      radius = options.delete(:radius) || 200
+      language  = options.delete(:language)
+      types = options.delete(:types)
+
+      exclude = [exclude] unless exclude.is_a?(Array)
+
+      options = {
+        :sensor => sensor,
+        :offset => offset,
+        :location => location.format,
+        :radius => radius,
+        :language => language,
+        :input => search_term,
+        :key => api_key
+      }
+
+      # Accept Types as a string or array
+      if types
+        types = (types.is_a?(Array) ? types.join('|') : types)
+        options.merge!(:types => types)
+      end
+
+      response = Request.autocomplete(options)
+      response['predictions'].map do |result|
+        #puts result.inspect
+        puts (result['types'] & exclude)
+        self.new(result) if (result['types'] & exclude) == []
+      end.compact
+    end
 
     def self.list(lat, lng, api_key, options = {})
       radius = options.delete(:radius) || 200
@@ -57,8 +91,10 @@ module GooglePlaces
     def initialize(json_result_object)
       @reference                  = json_result_object['reference']
       @vicinity                   = json_result_object['vicinity']
-      @lat                        = json_result_object['geometry']['location']['lat']
-      @lng                        = json_result_object['geometry']['location']['lng']
+      if json_result_object['geometry']
+        @lat                        = json_result_object['geometry']['location']['lat']
+        @lng                        = json_result_object['geometry']['location']['lng']
+      end
       @name                       = json_result_object['name']
       @icon                       = json_result_object['icon']
       @types                      = json_result_object['types']
@@ -77,6 +113,12 @@ module GooglePlaces
       @url                        = json_result_object['url']
       @cid                        = json_result_object['url'].to_i
       @website                    = json_result_object['website']
+      @description                = json_result_object['description']
+      @reference                  = json_result_object['reference']
+      @terms                      = json_result_object['terms']
+      @description                = json_result_object['description']
+      @id                         = json_result_object['id']
+      @matched_substrings         = json_result_object['matched_substrings']
     end
 
     def address_component(address_component_type, address_component_length)
