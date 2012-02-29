@@ -5,37 +5,19 @@ module GooglePlaces
     def self.directions(origin_lat, origin_lng, dest_lat, dest_lng,
                           api_key, options={})
       sensor = options.delete(:sensor) || false
-      offset = options.delete(:offset) || ""
       origin = Location.new(origin_lat, origin_lng)
       destination = Location.new(dest_lat, dest_lng)
-      radius = options.delete(:radius) || 200
-      language  = options.delete(:language)
-      types = options.delete(:types)
-
-      exclude = [exclude] unless exclude.is_a?(Array)
 
       options = {
         :sensor => sensor,
-        :offset => offset,
         :origin => origin.format,
         :destination => destination.format,
-        :language => language,
-        :input => search_term,
-        :key => api_key
+        :waypoints => true
       }
-
-      # Accept Types as a string or array
-      if types
-        types = (types.is_a?(Array) ? types.join('|') : types)
-        options.merge!(:types => types)
-      end
+      puts options.inspect
 
       response = Request.directions(options)
-      response['predictions'].map do |result|
-        #puts result.inspect
-        puts (result['types'] & exclude)
-        self.new(result) if (result['types'] & exclude) == []
-      end.compact
+      self.new(response)  
     end
 
     def self.autocomplete(search_term, lat, lng, api_key, options={})

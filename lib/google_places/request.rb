@@ -8,7 +8,7 @@ module GooglePlaces
     SPOTS_LIST_URL = 'https://maps.googleapis.com/maps/api/place/search/json'
     SPOT_URL   = 'https://maps.googleapis.com/maps/api/place/details/json'
     PLACES_URL = 'https://maps.googleapis.com/maps/api/place/autocomplete/json'
-    DIRECTIONS_URL = 'https://maps.googleapis.com/maps/api/directions/autocomplete/json'
+    DIRECTIONS_URL = 'https://maps.googleapis.com/maps/api/directions/json'
 
     def self.directions(options = {})
       # pp options
