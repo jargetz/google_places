@@ -19,5 +19,9 @@ module GooglePlaces
     def autocomplete(search_term, lat, lng, options = {})
       Spot.autocomplete(search_term, lat, lng, @api_key, @options.merge(options))
     end
+
+    def directions(origin_lat, origin_lng, dest_lat, dest_lng, options = {})
+      Spot.directions(origin_lat, origin_lng, dest_lat, dest_lng, @api_key, @options.merge(options))
+    end
   end
 end

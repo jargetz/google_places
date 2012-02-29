@@ -1,6 +1,43 @@
 module GooglePlaces
   class Spot
-    attr_accessor :lat, :lng, :name, :icon, :reference, :vicinity, :types, :id, :formatted_phone_number, :international_phone_number, :formatted_address, :address_components, :street_number, :street, :city, :region, :postal_code, :country, :rating, :url, :cid, :website, :description, :id, :matched_substrings, :reference, :terms
+    attr_accessor :lat, :lng, :name, :icon, :reference, :vicinity, :types, :id, :formatted_phone_number, :international_phone_number, :formatted_address, :address_components, :street_number, :street, :city, :region, :postal_code, :country, :rating, :url, :cid, :website, :description, :id, :matched_substrings, :reference, :terms, :routes
+
+    def self.autocomplete(origin_lat, origin_lng, dest_lat, dest_lng,
+                          api_key, options={})
+      sensor = options.delete(:sensor) || false
+      offset = options.delete(:offset) || ""
+      origin = Location.new(origin_lat, origin_lng)
+      destination = Location.new(dest_lat, dest_lng)
+      radius = options.delete(:radius) || 200
+      language  = options.delete(:language)
+      types = options.delete(:types)
+
+      exclude = [exclude] unless exclude.is_a?(Array)
+
+      options = {
+        :sensor => sensor,
+        :offset => offset,
+        :origin => origin.format,
+        :destination => destination.format,
+        :location => location.format,
+        :language => language,
+        :input => search_term,
+        :key => api_key
+      }
+
+      # Accept Types as a string or array
+      if types
+        types = (types.is_a?(Array) ? types.join('|') : types)
+        options.merge!(:types => types)
+      end
+
+      response = Request.directions(options)
+      response['predictions'].map do |result|
+        #puts result.inspect
+        puts (result['types'] & exclude)
+        self.new(result) if (result['types'] & exclude) == []
+      end.compact
+    end
 
     def self.autocomplete(search_term, lat, lng, api_key, options={})
       sensor = options.delete(:sensor) || false
@@ -119,6 +156,7 @@ module GooglePlaces
       @description                = json_result_object['description']
       @id                         = json_result_object['id']
       @matched_substrings         = json_result_object['matched_substrings']
+      @routes                     = json_result_object['routes']
     end
 
     def address_component(address_component_type, address_component_length)
