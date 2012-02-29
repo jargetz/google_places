@@ -19,7 +19,6 @@ module GooglePlaces
         :offset => offset,
         :origin => origin.format,
         :destination => destination.format,
-        :location => location.format,
         :language => language,
         :input => search_term,
         :key => api_key
