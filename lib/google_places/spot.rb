@@ -2,7 +2,7 @@ module GooglePlaces
   class Spot
     attr_accessor :lat, :lng, :name, :icon, :reference, :vicinity, :types, :id, :formatted_phone_number, :international_phone_number, :formatted_address, :address_components, :street_number, :street, :city, :region, :postal_code, :country, :rating, :url, :cid, :website, :description, :id, :matched_substrings, :reference, :terms, :routes
 
-    def self.autocomplete(origin_lat, origin_lng, dest_lat, dest_lng,
+    def self.directions(origin_lat, origin_lng, dest_lat, dest_lng,
                           api_key, options={})
       sensor = options.delete(:sensor) || false
       offset = options.delete(:offset) || ""
