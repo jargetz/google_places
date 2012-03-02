@@ -12,7 +12,6 @@ module GooglePlaces
         :sensor => sensor,
         :origin => origin.format,
         :destination => destination.format,
-        :waypoints => true
       }
       puts options.inspect
 
