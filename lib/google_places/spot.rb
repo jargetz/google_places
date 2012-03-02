@@ -13,7 +13,6 @@ module GooglePlaces
         :origin => origin.format,
         :destination => destination.format,
       }
-      puts options.inspect
 
       response = Request.directions(options)
       self.new(response)  
