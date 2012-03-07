@@ -22,7 +22,7 @@ module GooglePlaces
       sensor = options.delete(:sensor) || false
       offset = options.delete(:offset) || ""
       location = Location.new(lat, lng)
-      radius = options.delete(:radius) || 200
+      radius = options.delete(:radius) || 10000
       language  = options.delete(:language)
       types = options.delete(:types)
 
