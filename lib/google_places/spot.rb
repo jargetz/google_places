@@ -136,8 +136,8 @@ module GooglePlaces
       @id                         = json_result_object['id']
       @matched_substrings         = json_result_object['matched_substrings']
       @routes                     = json_result_object['routes']
-      @lat                        = json_result_object['lat']
-      @lng                        = json_result_object['lng']
+      @lat                        = json_result_object['lat'] if !@lat.to_s.empty?
+      @lng                        = json_result_object['lng'] if !@lat.to_s.empty?
     end
 
     def address_component(address_component_type, address_component_length)
