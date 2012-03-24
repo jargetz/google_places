@@ -53,7 +53,7 @@ module GooglePlaces
     end
 
     def self.list(lat, lng, api_key, options = {})
-      radius = options.delete(:radius) || 200
+      radius = options.delete(:radius) || 30000
       sensor = options.delete(:sensor) || false
       types  = options.delete(:types)
       name  = options.delete(:name)
@@ -136,6 +136,8 @@ module GooglePlaces
       @id                         = json_result_object['id']
       @matched_substrings         = json_result_object['matched_substrings']
       @routes                     = json_result_object['routes']
+      @lat                        = json_result_object['lat']
+      @lng                        = json_result_object['lng']
     end
 
     def address_component(address_component_type, address_component_length)
