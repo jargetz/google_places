@@ -53,7 +53,7 @@ module GooglePlaces
     end
 
     def self.list(lat, lng, api_key, options = {})
-      radius = options.delete(:radius) || 30000
+      #radius = options.delete(:radius) || 30000
       sensor = options.delete(:sensor) || false
       types  = options.delete(:types)
       name  = options.delete(:name)
@@ -67,13 +67,14 @@ module GooglePlaces
 
       options = {
         :location => location.format,
-        :radius => radius,
+        #:radius => radius,
         :sensor => sensor,
         :key => api_key,
         :name => name,
         :language => language,
         :keyword => keyword,
-        :retry_options => retry_options
+        :retry_options => retry_options,
+        :rankby => "distance"
       }
 
       # Accept Types as a string or array
