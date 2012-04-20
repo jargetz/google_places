@@ -53,10 +53,7 @@ module GooglePlaces
     end
 
     def self.list(lat, lng, api_key, options = {})
-      radius = nil
-      if options[:rankby].to_s.empty?
-        radius = options.delete(:radius) || 50000
-      end
+      radius = options.delete(:radius) 
       sensor = options.delete(:sensor) || false
       types  = options.delete(:types)
       name  = options.delete(:name)
