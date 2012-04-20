@@ -22,7 +22,7 @@ module GooglePlaces
       sensor = options.delete(:sensor) || false
       offset = options.delete(:offset) || ""
       location = Location.new(lat, lng)
-      radius = options.delete(:radius) 
+      radius = options.delete(:radius) || 50000
       language  = options.delete(:language)
       types = options.delete(:types)
 
@@ -53,7 +53,10 @@ module GooglePlaces
     end
 
     def self.list(lat, lng, api_key, options = {})
-      radius = options.delete(:radius) || 50000
+      radius = nil
+      if options[:rankby].to_s.empty?
+        radius = options.delete(:radius) || 50000
+      end
       sensor = options.delete(:sensor) || false
       types  = options.delete(:types)
       name  = options.delete(:name)
@@ -62,6 +65,7 @@ module GooglePlaces
       location = Location.new(lat, lng)
       exclude = options.delete(:exclude) || []
       retry_options = options.delete(:retry_options) || {}
+      rankby = options.delete(:rankby) || "prominence"
 
       exclude = [exclude] unless exclude.is_a?(Array)
 
@@ -74,7 +78,7 @@ module GooglePlaces
         :language => language,
         :keyword => keyword,
         :retry_options => retry_options,
-        #:rankby => "distance"
+        :rankby => rankby
       }
 
       # Accept Types as a string or array
