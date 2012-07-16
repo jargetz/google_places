@@ -7,12 +7,17 @@ module GooglePlaces
       sensor = options.delete(:sensor) || false
       origin = Location.new(origin_lat, origin_lng)
       destination = Location.new(dest_lat, dest_lng)
+      waypoints = options.delete(:waypoints) || nil
 
       options = {
         :sensor => sensor,
         :origin => origin.format,
         :destination => destination.format,
       }
+
+      if not waypoints.nil?
+        options[:waypoints] = waypoints
+      end
 
       response = Request.directions(options)
       self.new(response)  
